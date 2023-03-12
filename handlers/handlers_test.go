@@ -27,7 +27,7 @@ func TestHome(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !strings.Contains(string(bodyText), "awesome") {
-		cel.TakeScreenShot(ts.URL+"/", "HomeTest", 1500, 1000)
+		dj.TakeScreenShot(ts.URL+"/", "HomeTest", 1500, 1000)
 		t.Error("did not find submarine")
 	}
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/virmos/django/render"
 )
 
-var cel django.Django
+var dj django.Django
 var testSession *scs.SessionManager
 var testHandlers Handlers
 
@@ -43,7 +43,7 @@ func TestMain(m *testing.M) {
 		Session:  testSession,
 	}
 
-	cel = django.Django{
+	dj = django.Django{
 		AppName:       "myapp",
 		Debug:         true,
 		Version:       "1.0.0",
@@ -55,21 +55,21 @@ func TestMain(m *testing.M) {
 		Session:       testSession,
 		DB:            django.Database{},
 		JetViews:      views,
-		EncryptionKey: cel.RandomString(32),
+		EncryptionKey: dj.RandomString(32),
 		Cache:         nil,
 		Scheduler:     nil,
 		Mail:          mailer.Mail{},
 		Server:        django.Server{},
 	}
 
-	testHandlers.App = &cel
+	testHandlers.App = &dj
 
 	os.Exit(m.Run())
 }
 
 func getRoutes() http.Handler {
 	mux := chi.NewRouter()
-	mux.Use(cel.SessionLoad)
+	mux.Use(dj.SessionLoad)
 	mux.Get("/", testHandlers.Home)
 	fileServer := http.FileServer(http.Dir("./../public"))
 	mux.Handle("/public/*", http.StripPrefix("/public", fileServer))
